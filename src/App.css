@@ -1,3 +1,5 @@
+@import url("./css/root.css");
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +41,10 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.test {
+  font-size: var(--typo-heading-1);
+  font-weight: var(--typo-heading-1-weight);
+  color: var(--main-color);
 }
