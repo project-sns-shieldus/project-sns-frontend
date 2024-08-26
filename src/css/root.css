@@ -10,29 +10,31 @@
   --black--color: #000000;
 
   /* 타이포 */
-  --typo-heading-1: 48pt;
+  --typo-heading-1: 48px;
   --typo-heading-1-weight: 700;
 
-  --typo-heading-2: 32pt;
+  --typo-heading-2: 32px;
   --typo-heading-2-weight: 700;
 
-  --typo-heading-3: 26pt;
+  --typo-heading-3: 26px;
   --typo-heading-3-weight: 700;
 
-  --typo-heading-4: 26pt;
+  --typo-heading-4: 26px;
   --typo-heading-4-weight: 500;
 
-  --typo-body-1: 26pt;
+  --typo-body-1: 26px;
   --typo-body-1-weight: 400;
 
-  --typo-body-2: 22pt;
+  --typo-body-2: 22px;
   --typo-body-2-weight: 500;
 
-  --typo-body-3: 22pt;
+  --typo-body-3: 22px;
   --typo-body-3-weight: 400;
 
-  --typo-body-4: 18pt;
+  --typo-body-4: 18px;
   --typo-body-4-weight: 500;
+
+  --font-family: "NotoSansKR", sans-serif;
 }
 
 /* 팝업창 그림자 */
@@ -47,7 +49,7 @@
 
 /* 메인 그림자 */
 .main-shadow {
-  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.1); /* X, Y, Blur, Color + Transparency */
+  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* 상단바 그림자 */
@@ -60,8 +62,19 @@
 /* 로컬 font */
 @font-face {
   font-family: "NotoSansKR";
-  src: url("/assets/font/noto-sans-kr-v36-latin-regular.woff2") format("woff2"),
-    url("/assets/font/NotoSansKR-VariableFont_wght.ttf") format("truetype");
+  src: url("src/assets/font/noto-sans-kr-v36-latin-regular.woff2")
+      format("woff2"),
+    url("src/assets/font/NotoSansKR-VariableFont_wght.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+}
+
+/* 전역 스타일 설정 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: var(--gray1-color);
+  font-family: var(--font-family);
 }

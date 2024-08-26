@@ -1,0 +1,14 @@
+.image-container {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: end;
+  gap: 25px;
+  padding-right: 30px;
+}
+
+.image-container img {
+  width: 32px;
+  height: 32px;
+  width: 48px;
+  height: 48px;
+}
