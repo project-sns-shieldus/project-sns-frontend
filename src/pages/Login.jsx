@@ -32,14 +32,18 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="button" onClick={() => navigate("/home")}>
-          LOGIN
+        <button
+          className="login-btn"
+          type="button"
+          onClick={() => navigate("/home")}
+        >
+          <a>LOGIN</a>
         </button>
+        <div className="signup-link">
+          <a>계정이 없으신가요? </a>
+          <span onClick={() => navigate("/signup")}>회원가입</span>
+        </div>
       </form>
-      <div className="signup-link">
-        계정이 없으신가요?{" "}
-        <span onClick={() => navigate("/signup")}>회원가입</span>
-      </div>
     </div>
   );
 }
