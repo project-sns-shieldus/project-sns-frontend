@@ -31,7 +31,7 @@ function Signup() {
     <div className="signup-container">
       <form className="signup-form" onSubmit={handleSignup}>
         <div className="catchphrase">
-          <div className="login-logo">
+          <div className="signup-logo">
             <img src={logo} alt="Delta Logo" />
             <a>Delta</a>
           </div>
@@ -71,10 +71,10 @@ function Signup() {
             onClick={handleCancel}
             className="cancel-button"
           >
-            가입 취소
+            <a>가입 취소</a>
           </button>
           <button type="submit" className="signup-button">
-            회원가입
+            <a>회원가입</a>
           </button>
         </div>
       </form>
