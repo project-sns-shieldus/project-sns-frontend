@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Axios import
 import "../css/Signup.css";
 import logo from "../assets/img/delta-blu.svg";
 
@@ -10,7 +11,7 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSignup = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
@@ -18,9 +19,27 @@ function Signup() {
             return;
         }
 
-        // 회원가입 처리 로직
-        alert("회원가입이 완료되었습니다.");
-        navigate("/login"); // 회원가입 완료 후 팝업 노출 후 로그인 페이지로 이동
+        try {
+            const response = await axios.post("http://localhost:8080/api/auth/register", {
+                username: username,
+                email: email,
+                password: password,
+            });
+
+            if (response.status === 200) { // 회원가입 성공
+                alert("회원가입이 완료되었습니다.");
+                navigate("/login"); // 회원가입 후 로그인 페이지로 이동
+            } else {
+                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("회원가입 중 오류 발생:", error);
+            if (error.response && error.response.data) {
+                alert(`회원가입 실패: ${error.response.data.message}`);
+            } else {
+                alert("회원가입 중 오류가 발생했습니다.");
+            }
+        }
     };
 
     const handleCancel = () => {
