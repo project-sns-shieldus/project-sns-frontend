@@ -69,9 +69,11 @@
 .loader-img {
   width: 70px;
   height: auto;
+  padding-top: 10px;
   padding-bottom: 20px;
 }
 
 .message-overlay p {
+  padding-bottom: 10px;
   color: var(--gray4-color);
 }
