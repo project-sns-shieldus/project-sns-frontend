@@ -54,7 +54,7 @@ function HeaderMenu() {
                 {isModalOpen && (
                     <div className="modal" ref={modalRef}>
                         <ul>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Link.svg"/>텍스트 입력</li>
+                            <li onClick={handleMenuClick}><img src="src/assets/img/Link.svg"/>링크 복사</li>
                             <li onClick={handleMenuClick}><img src="src/assets/img/Option.svg"/>설정</li>
                             <li onClick={handleMenuClick}><img src="src/assets/img/Logout.svg"/>로그아웃</li>
                         </ul>
