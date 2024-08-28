@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/Navigate.css";
 import search from "../assets/img/Search.svg";
 import loader from "../assets/img/Loader-gry.svg";
+import delta from "../assets/img/delta-blk.svg";
 
 export default function Navigate() {
   const [hashtag, setHashtag] = useState("");
@@ -61,14 +62,20 @@ export default function Navigate() {
 
   return (
     <div className="Navigate">
-      <input
-        className="nav-input"
-        type="text"
-        value={hashtag}
-        onChange={(e) => setHashtag(e.target.value)}
-        onKeyDown={handleKeyPress}
-        placeholder="해시태그를 입력"
-      />
+      <div className="search-container">
+        {/* <img src={delta} alt="delta Icon" className="delta-icon" /> */}
+        <input
+          className="nav-input"
+          type="text"
+          value={hashtag}
+          onChange={(e) => setHashtag(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="해시태그를 입력"
+        />
+        <button onClick={handleSearch} className="search-btn">
+          <img src={search} alt="Search Icon" className="search-icon" />
+        </button>
+      </div>
       <div className="posts-container">
         {/* 초기 상태 메시지 */}
         {!loading && !error && posts.length === 0 && (

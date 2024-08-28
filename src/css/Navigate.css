@@ -7,7 +7,7 @@
   text-align: center;
 }
 
-.Navigate input {
+/* .Navigate input {
   border: none;
   outline: var(--gray4-color);
   box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,8 @@
   height: 60px;
   border-radius: 20px;
   max-width: 745px;
-}
+  padding-left: 40px;
+} */
 
 .error {
   color: var(--gray4-color);
@@ -62,10 +63,6 @@
   border-radius: 8px;
 }
 
-.nav-input {
-  padding-left: 40px;
-}
-
 .loader-img {
   width: 70px;
   height: auto;
@@ -74,6 +71,50 @@
 }
 
 .message-overlay p {
-  padding-bottom: 10px;
   color: var(--gray4-color);
+  padding-bottom: 10px;
 }
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 5%;
+  position: relative;
+}
+
+.search-btn {
+  width: 45px;
+  height: 45px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 25%;
+}
+
+.nav-input {
+  width: 50%;
+  height: 50px;
+  border: none;
+  outline: var(--gray4-color);
+  box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  max-width: 745px;
+  padding-left: 40px;
+}
+
+.search-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* .delta-icon {
+  position: absolute;
+  left: 25%;
+  width: 30px;
+  height: 30px;
+} */
