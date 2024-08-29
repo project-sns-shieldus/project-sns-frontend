@@ -6,18 +6,62 @@ import heart from 'src/assets/img/Heart.svg';
 import edit from 'src/assets/img/Edit 3.svg';
 import sendIcon from 'src/assets/img/Comment.svg';
 import deleteIcon from 'src/assets/img/Delete.svg';
+import { useParams } from 'react-router-dom';
+import { postApi } from '../api/controller/postApi';
+import { commentApi } from '../api/controller/commentApi';
 
 export default function PostDetail() {
+    const { id } = useParams();
+    const currentUserId = localStorage.getItem("userId");
+    const currentUsername = localStorage.getItem("username");
+
+    const [post, setPost] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPostOptions, setIsPostOptions] = useState(false);
     const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
     const [isCommentBoxVisible, setIsCommentBoxVisible] = useState(false);
-    const [comment, setComment] = useState('');
+    const [commentContent, setCommentContent] = useState('');
+    const [commentList, setCommentList] = useState([]);
     const modalRef = useRef(null);
 
-    const toggleModal = (event) => {
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const response = await postApi.getPostById(id);
+                setPost(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error fetching post data:", error);
+            }
+        };
+
+        fetchPost();
+    }, [id]);
+
+    useEffect(() => {
+        fetchCommentList();
+    }, []);
+
+    const fetchCommentList = async () => {
+        try {
+            const response = await commentApi.getCommentsByPostId(id);
+            setCommentList(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching comment list data", error);
+        }
+    };
+
+    const toggleModal = (event, isPost, commentUsername) => {
         const buttonRect = event.target.getBoundingClientRect();
         setModalPosition({ top: buttonRect.bottom + window.scrollY, left: buttonRect.left + window.scrollX });
         setIsModalOpen(!isModalOpen);
+
+        if (isPost) {
+            setIsPostOptions(true);  // Show options for the post (edit, delete)
+        } else {
+            setIsPostOptions(false);  // Show edit if comment is owned by current user
+        }
     };
 
     const closeModal = (e) => {
@@ -34,19 +78,23 @@ export default function PostDetail() {
         setIsCommentBoxVisible(true);
     };
 
-    const handleSendClick = () => {
-        // TODO: Send comment to the server (implement API call here)
-        console.log('Comment sent:', comment);
+    const handleSendClick = async () => {
+        console.log('Comment sent:', commentContent);
 
-        // Reset state after sending comment
+        try {
+            await commentApi.createComment(id, localStorage.getItem("userId"), commentContent);
+        } catch (error) {
+            console.error("Error sending comment:", error);
+        }
+
         setIsCommentBoxVisible(false);
-        setComment('');
+        setCommentContent('');
+        fetchCommentList();
     };
 
     const handleDeleteClick = () => {
-        // Reset state if cancel is clicked
         setIsCommentBoxVisible(false);
-        setComment('');
+        setCommentContent('');
     };
 
     useEffect(() => {
@@ -57,26 +105,34 @@ export default function PostDetail() {
         };
     }, []);
 
+
     return (
         <div className='post-detail-container'>
             <div className='post-detail-box'>
                 <div className='post-detail-user-basic-info'>
                     <div className='post-detail-user-info'>
                         <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' alt="User" />
-                        <p className='user-name'>username</p>
+                        <p className='user-name'>{post?.user?.username}</p>
                     </div>
                     <img
                         className='post-detail-option'
                         src={moreHorizontal}
                         alt="More options"
-                        onClick={toggleModal}
+                        onClick={(e) => toggleModal(e, true)}
                     />
                 </div>
 
-                <img
-                    src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'
-                    alt="Post"
-                />
+                {/* Conditional rendering of the post image */}
+                {post?.images?.length > 0 && (
+                    <>
+                        <img
+                            src={`http://localhost:8080/uploads/${post.images[0].fileName}`}
+                            alt="Post"
+                        />
+                        <p className='post-detail-content'>{post.content}</p>
+                    </>
+                )}
+
                 <div className='post-detail-functions'>
                     <img src={heart} alt="Like" />
                     <img src={edit} alt="Edit" onClick={handleEditClick} />
@@ -88,11 +144,11 @@ export default function PostDetail() {
                         <div className='post-detail-comments'>
                             <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' alt="Commenter" />
                             <div>
-                                <p className='post-detail-commenter-user-name'>username</p>
+                                <p className='post-detail-commenter-user-name'>{localStorage.getItem("username")}</p>
                                 <textarea
                                     className='post-detail-comments-new'
-                                    value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
                                     placeholder="Write a comment..."
                                 />
                             </div>
@@ -115,44 +171,55 @@ export default function PostDetail() {
                 )}
 
                 {/* Comments Section */}
-                <div className='post-detail-comments-box'>
-                    <div className='post-detail-comments'>
-                        <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' alt="Commenter" />
-                        <div>
-                            <p className='post-detail-commenter-user-name'>username</p>
-                            <p className='post-detail-comments-content'>댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 댓글 예시 </p>
+                {commentList?.map((comment) => (
+                    <div className='post-detail-comments-box' key={comment.id}>
+                        <div className='post-detail-comments'>
+                            <img src={comment.user.profileImage || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Commenter" />
+                            <div>
+                                <p className='post-detail-commenter-user-name'>{comment.user.username}</p>
+                                <p className='post-detail-comments-content'>{comment.content}</p>
+                            </div>
                         </div>
+                        <img
+                            className='comment-option'
+                            src={moreVertical}
+                            alt="Comment options"
+                            onClick={(e) => toggleModal(e, false, comment.user.username)} // Pass the comment's userId
+                        />
+
+                        {/* Modal for each comment */}
+                        {isModalOpen && modalPosition.commentId === comment.id && (
+
+                            <div
+                                className="modal"
+                                ref={modalRef}
+                                style={{ top: modalPosition.top, left: modalPosition.left }}
+                            >
+                                {isPostOptions === true ? (
+                                    <ul>
+                                        <li onClick={handleMenuClick}><img src={edit} alt="edit" /> 게시물 수정</li>
+                                        <li onClick={handleMenuClick}><img src={deleteIcon} alt="delete" /> 게시물 삭제</li>
+                                    </ul>
+                                ) : (
+                                    <ul>
+                                        {comment.user.username === localStorage.getItem("username") ? (
+                                            <>
+                                                <li onClick={handleMenuClick}><img src={edit} alt="edit" /> Edit</li>
+                                                <li onClick={handleMenuClick}><img src={sendIcon} alt="reply" /> Reply</li>
+                                                <li onClick={handleMenuClick}><img src={deleteIcon} alt="delete" /> Delete</li>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <li onClick={handleMenuClick}><img src={sendIcon} alt="reply" /> Reply</li>
+                                                <li onClick={handleMenuClick}><img src={deleteIcon} alt="delete" /> Delete</li>
+                                            </>
+                                        )}
+                                    </ul>
+                                )}
+                            </div>
+                        )}
                     </div>
-                    <img
-                        className='comment-option'
-                        src={moreVertical}
-                        alt="Comment options"
-                        onClick={toggleModal}
-                    />
-                </div>
-
-                {isModalOpen && (
-                    <div
-                        className="modal"
-                        ref={modalRef}
-                        style={{ top: modalPosition.top, left: modalPosition.left }}
-                    >
-                        <ul>
-                            <li onClick={handleMenuClick}><img src={edit}/>댓글 수정</li>
-                            <li onClick={handleMenuClick}><img src={sendIcon}/>답글 달기</li>
-                            <li onClick={handleMenuClick}><img src={deleteIcon}/>댓글 삭제</li>
-                        </ul>
-
-                        {/* 
-                        내가 쓴 댓글이 안닐 시 아래 모달이 떠야 합니다!
-
-                        <ul>
-                            <li onClick={handleMenuClick}><img src={sendIcon}/>답글 달기</li>
-                            <li onClick={handleMenuClick}><img src={deleteIcon}/>댓글 삭제</li>
-                        </ul>
-                        */}
-                    </div>
-                )}
+                ))}
             </div>
         </div>
     );

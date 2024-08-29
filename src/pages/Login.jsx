@@ -27,6 +27,7 @@ function Login() {
                 const { token } = response.data;
                 localStorage.setItem('authToken', token); // JWT 토큰을 localStorage에 저장
                 localStorage.setItem('userId', response.data.userId); // 사용자 ID 저장
+                localStorage.setItem('username', username); // 사용자 username 저장
                 alert("로그인 성공!");
                 navigate("/"); // 홈 페이지로 이동
             } else {

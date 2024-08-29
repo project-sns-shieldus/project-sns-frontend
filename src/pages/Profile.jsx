@@ -1,26 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../css/Profile.css'
+import { userApi } from '../api/controller/userApi'
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await userApi.getUser(localStorage.getItem("userId"));
+                setUser(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
     return (
         <div className='profile-container'>
             <div className='profile-box'>
                 <div className='user-info'>
-                    <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'></img>
+                    <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' alt='Profile'/>
                     <div className='user-detail'>
-                        <p className='user-name'>username</p>
+                        <p className='user-name'>{user?.username || "username"}</p> {/* Use user data here */}
                         <br/>
                         <div className='posts-and-follows'>
                             <div>
-                                <p>000</p>
+                                <p>{(user?.posts)?.length || 0}</p>
                                 <p>게시물</p>
                             </div>
                             <div>
-                                <p>000</p>
+                                <p>{(user?.followers)?.length || 0}</p>
                                 <p>팔로워</p>
                             </div>
                             <div>
-                                <p>000</p>
+                                <p>{(user?.followings)?.length || 0}</p>
                                 <p>팔로잉</p>
                             </div>
                         </div>
@@ -30,14 +49,11 @@ export default function Profile() {
                 <hr className='separate-line'/>
 
                 <div className='posts'>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
-                    <img src='https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg'/>
+                    {user?.posts?.map((post, index) => (
+                        <Link to={`/postDetail/${post?.postId}`}><img key={index} src={`http://localhost:8080/uploads/${post?.images[0]?.fileName}`} alt={`Post ${index}`} /></Link>
+                    ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }

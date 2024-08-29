@@ -8,6 +8,9 @@ import compass from "src/assets/img/Compass.svg";
 import user from "src/assets/img/User.svg";
 import vertical from "src/assets/img/More vertical.svg";
 import SearchIcon from "src/assets/img/HeaderSearch.svg"; // Search 대신 이름 변경
+import link from "src/assets/img/Link.svg";
+import option from "src/assets/img/Option.svg";
+import logout from "src/assets/img/Logout.svg";
 
 function HeaderMenu() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,9 +88,9 @@ function HeaderMenu() {
                 {isModalOpen && (
                     <div className="modal" ref={modalRef}>
                         <ul>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Link.svg" alt="링크 아이콘"/>링크 복사</li>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Option.svg" alt="설정 아이콘"/>설정</li>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Logout.svg" alt="로그아웃 아이콘"/>로그아웃</li>
+                            <li onClick={handleMenuClick}><img src={link}/>링크 복사</li>
+                            <li onClick={handleMenuClick}><img src={option}/>설정</li>
+                            <li onClick={handleMenuClick}><img src={logout}/>로그아웃</li>
                         </ul>
                     </div>
                 )}
