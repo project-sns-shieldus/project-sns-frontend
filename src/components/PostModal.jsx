@@ -87,5 +87,16 @@ export default function PostModal({ onClose }) {
                 </div>
             </div>
         </div>
-    );
+        <textarea
+          value={content}
+          onChange={handleContentChange}
+          placeholder="텍스트 입력란..."
+        />
+        <input type="file" onChange={handleImageChange} />
+        <button onClick={handleSubmit} className="submit-post">
+          <p>게시</p>
+        </button>
+      </div>
+    </div>
+  );
 }
