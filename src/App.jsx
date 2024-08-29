@@ -12,6 +12,7 @@ import Search from "./pages/Search";
 import PostDetail from "./pages/PostDetail";
 
 function App() {
+
     return (
         <Routes>
             <Route path="/" element={<Layout />}>
