@@ -16,4 +16,5 @@ export const userApi = {
     addFollowing: (userId, followingId) => instance.post(`/api/user/addFollowing/${userId}/${followingId}`),
 
     deleteFollowing: (userId, followingId) => instance.post(`/api/user/deleteFollowing/${userId}/${followingId}`),
+    
 };
