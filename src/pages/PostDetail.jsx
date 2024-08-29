@@ -130,6 +130,29 @@ export default function PostDetail() {
                         onClick={toggleModal}
                     />
                 </div>
+
+                {isModalOpen && (
+                    <div
+                        className="modal"
+                        ref={modalRef}
+                        style={{ top: modalPosition.top, left: modalPosition.left }}
+                    >
+                        <ul>
+                            <li onClick={handleMenuClick}><img src={edit}/>댓글 수정</li>
+                            <li onClick={handleMenuClick}><img src={sendIcon}/>답글 달기</li>
+                            <li onClick={handleMenuClick}><img src={deleteIcon}/>댓글 삭제</li>
+                        </ul>
+
+                        {/* 
+                        내가 쓴 댓글이 안닐 시 아래 모달이 떠야 합니다!
+
+                        <ul>
+                            <li onClick={handleMenuClick}><img src={sendIcon}/>답글 달기</li>
+                            <li onClick={handleMenuClick}><img src={deleteIcon}/>댓글 삭제</li>
+                        </ul>
+                        */}
+                    </div>
+                )}
             </div>
         </div>
     );
