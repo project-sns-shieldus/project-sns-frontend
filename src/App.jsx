@@ -17,6 +17,7 @@ function App() {
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="postDetail" element={<PostDetail />} />
+                <Route path="postDetail" element={<PostDetail />} />
                 <Route path="message" element={<Message/>}/>
                 <Route path="notification" element={<Notification />} />
                 <Route path="navigate" element={<Navigate/>}/>
