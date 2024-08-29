@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../css/HeaderMenu.css";
+import "../css/Modal.css";
 import message from "src/assets/img/Message circle.svg";
 import bell from "src/assets/img/Bell.svg";
 import compass from "src/assets/img/Compass.svg";
