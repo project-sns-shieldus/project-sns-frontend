@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { postApi } from '../api/controller/postApi';
 import { imageApi } from '../api/controller/imageApi';
+import imageIcon from '../assets/img/imagesave.svg';
+import Arrow from '../assets/img/Arrow right.svg'
 import '../css/PostModal.css';
 
 export default function PostModal({ onClose }) {
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setIsVisible(true); // 모달을 화면에 표시
+    }, []);
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
+        const file = e.target.files[0];
+        setImage(file);
     };
 
     const handleContentChange = (e) => {
         setContent(e.target.value);
+    };
+
+    const handleClose = () => {
+        setIsVisible(false); // 모달이 닫힐 때
+        setTimeout(() => {
+            onClose(); 
+        }, 400); 
     };
 
     const handleSubmit = async () => {
@@ -37,19 +52,39 @@ export default function PostModal({ onClose }) {
     };
 
     return (
-        <div className="modal-overlay">
+        <div className={`modal-overlay ${isVisible ? 'show' : ''}`}>
             <div className="modal-content">
                 <div className="modal-header">
                     <span>username</span>
-                    <button onClick={onClose} className="close-modal">X</button>
                 </div>
                 <textarea 
                     value={content} 
                     onChange={handleContentChange} 
-                    placeholder="텍스트 입력란..."
+                    placeholder="오늘은 어떤 일들이 있으셨나요?"
                 />
-                <input type="file" onChange={handleImageChange} />
-                <button onClick={handleSubmit} className="submit-post">게시</button>
+                <div className="image-upload-container">
+                    {image && (
+                        <img
+                            src={URL.createObjectURL(image)}
+                            alt="Preview"
+                            className="thumbnail"
+                        />
+                    )}
+                    <label>
+                        <img src={imageIcon} alt="Upload" />
+                        <input
+                            type="file"
+                            style={{ display: 'none' }}
+                            onChange={handleImageChange}
+                        />
+                    </label>
+                </div>
+                <div className="button-container">
+                <button onClick={handleClose} className="close-modal">
+                        <img src={Arrow} alt="Close"/>
+                    </button>
+                    <button onClick={handleSubmit} className="submit-post">게시</button>
+                </div>
             </div>
         </div>
     );

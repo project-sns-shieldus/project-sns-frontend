@@ -62,7 +62,7 @@ export default function Home() {
     };
 
     return (
-        <div className="home-container">
+        <div className={`home-container ${isModalOpen ? 'modal-open' : ''}`}>
             {/* 새 Post 작성 버튼 */}
             <button className="new-post-btn" onClick={openModal}>
                 <img src="/src/assets/img/Edit.svg" alt="New Post" />
