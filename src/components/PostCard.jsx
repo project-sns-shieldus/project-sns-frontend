@@ -47,7 +47,7 @@ export default function PostCard({ post }) {
             <p className="post-content" style={{ whiteSpace: 'pre-wrap' }}>
                 {post.content}
             </p>
-
+ 
             <div className="post-actions">
                 <button className="like-button">
                     <img src={heartIcon} alt="Like" />

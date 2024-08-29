@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { userApi } from '../api/controller/userApi';
+import { useLocation } from 'react-router-dom'; 
+import searchIcon from '../assets/img/Search.svg'; // 검색 아이콘 이미지 import
+import '../css/Search.css'; // CSS 파일 이름도 고유하게 변경
 
-export default function Search() {
-    const [searchUserId, setSearchUserId] = useState("");
+export default function SearchComponent() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState("");
+    const location = useLocation();
+    const [searchUserName, setSearchUserName] = useState("");
 
-    // 사용자 검색
-    const handleSearch = async () => {
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const query = params.get("query"); // URL에서 'query' 파라미터 가져오기
+
+        if (query) {
+            setSearchUserName(query);
+            handleSearch(query);
+        }
+    }, [location]);
+
+    // 사용자 이름으로 검색
+    const handleSearch = async (userName) => {
         try {
-            const response = await userApi.getUser(searchUserId);
+            const response = await userApi.getUsername(userName);
             setUser(response.data);
             setError(""); // 오류 메시지 초기화
         } catch (err) {
@@ -32,25 +46,40 @@ export default function Search() {
     };
 
     return (
-        <div>
-            <h1>사용자 검색</h1>
-            <input
-                type="text"
-                placeholder="유저 ID를 입력하세요"
-                value={searchUserId}
-                onChange={(e) => setSearchUserId(e.target.value)}
-            />
-            <button onClick={handleSearch}>검색</button>
+        <div className="search-component-container"> {/* 전체 스타일을 적용 */}
+            <div className="search-component-search-container">
+                <input
+                    className="search-component-user-input"
+                    type="text"
+                    placeholder="사용자명 검색"
+                    value={searchUserName}
+                    onChange={(e) => setSearchUserName(e.target.value)}
+                />
+                <button onClick={() => handleSearch(searchUserName)} className="search-component-search-btn">
+                    <img src={searchIcon} alt="Search Icon" className="search-component-search-icon" />
+                </button>
+            </div>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <div className="search-component-message-container"> {/* 사용자 정보 표시 영역 */}
+                {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            {user && (
-                <div style={{ marginTop: '10px', border: '1px solid #ccc', padding: '10px' }}>
-                    <p>유저 이름: {user.username}</p>
-                    <p>유저 ID: {user.userId}</p>
-                    <button onClick={handleFollow}>팔로우</button>
-                </div>
-            )}
+                {user && (
+                    <div className="search-component-message-content">
+                        <div className="search-component-profile-row">
+                            <img
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                alt={user.username}
+                                className="search-component-user-image search-component-active-border"
+                            />
+                        </div>
+                        <div className="search-component-username-row">
+                            <p className="search-component-username">{user.username}</p>
+                            <p className="search-component-user-id">{user.userId}</p>
+                        </div>
+                        <button onClick={handleFollow} className="search-component-follow-btn">팔로우</button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

@@ -3,6 +3,8 @@ import instance from '../axiosInstance';
 export const userApi = {
     getUser: (userId) => instance.get(`/api/user/${userId}`),
 
+    getUsername: (userName) => instance.get(`/api/user/${userName}`),
+
     createUser: (user) => instance.post('/api/user', user),
 
     updateUser: (userId, user) => instance.patch(`/api/user/${userId}`, user),
