@@ -6,7 +6,7 @@ import HeaderMenu from "./HeaderMenu";
 
 export default function HeaderContainer() {
     // 로그인된 사용자명 가져오기
-    const username = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
 
     return (
         <div className="Header">

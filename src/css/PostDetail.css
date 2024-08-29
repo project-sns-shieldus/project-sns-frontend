@@ -64,6 +64,12 @@
     gap: 30px;
 }
 
+.post-detail-content {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px;
+}
+
 .post-detail-comments-box {
     display: flex;
     flex-direction: row;
