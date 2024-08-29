@@ -74,7 +74,6 @@ export default function SearchComponent() {
                         </div>
                         <div className="search-component-username-row">
                             <p className="search-component-username">{user.username}</p>
-                            <p className="search-component-user-id">{user.userId}</p>
                         </div>
                         <button onClick={handleFollow} className="search-component-follow-btn">팔로우</button>
                     </div>

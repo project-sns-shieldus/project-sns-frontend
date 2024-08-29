@@ -3,7 +3,7 @@ import instance from '../axiosInstance';
 export const userApi = {
     getUser: (userId) => instance.get(`/api/user/${userId}`),
 
-    getUsername: (userName) => instance.get(`/api/user/${userName}`),
+    getUsername: (userName) => instance.get(`/api/user/username/${userName}`),
 
     createUser: (user) => instance.post('/api/user', user),
 
