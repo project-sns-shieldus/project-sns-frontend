@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/HeaderMenu.css";
 import "../css/Modal.css";
 import message from "src/assets/img/Message circle.svg";
@@ -7,11 +7,16 @@ import bell from "src/assets/img/Bell.svg";
 import compass from "src/assets/img/Compass.svg";
 import user from "src/assets/img/User.svg";
 import vertical from "src/assets/img/More vertical.svg";
+import SearchIcon from "src/assets/img/HeaderSearch.svg"; // Search 대신 이름 변경
 
 function HeaderMenu() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState(""); // 검색어를 위한 상태 추가
     const modalRef = useRef(null);
     const buttonRef = useRef(null);
+    const searchRef = useRef(null);
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 사용
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
@@ -20,9 +25,11 @@ function HeaderMenu() {
     const closeModal = (e) => {
         if (
             modalRef.current && !modalRef.current.contains(e.target) &&
-            buttonRef.current && !buttonRef.current.contains(e.target)
+            buttonRef.current && !buttonRef.current.contains(e.target) &&
+            searchRef.current && !searchRef.current.contains(e.target)
         ) {
             setIsModalOpen(false);
+            setIsSearchOpen(false);
         }
     };
 
@@ -30,10 +37,22 @@ function HeaderMenu() {
         setIsModalOpen(false);
     };
 
+    const handleSearchClick = () => {
+        if (isSearchOpen && searchQuery.trim()) {
+            // 검색창이 열려있고, 검색어가 입력된 경우 검색 실행
+            navigate(`/search?query=${searchQuery}`);
+        } else if (isSearchOpen && !searchQuery.trim()) {
+            // 검색창이 열려있지만 검색어가 입력되지 않은 경우 검색창 닫기
+            setIsSearchOpen(false);
+        } else {
+            // 검색창 열기
+            setIsSearchOpen(true);
+        }
+    };
+
     useEffect(() => {
         document.addEventListener("mousedown", closeModal);
 
-        // Cleanup the event listener when the component unmounts
         return () => {
             document.removeEventListener("mousedown", closeModal);
         };
@@ -42,6 +61,17 @@ function HeaderMenu() {
     return (
         <>
             <div className="image-container">
+                {isSearchOpen && (
+                    <input
+                        type="text"
+                        className="search-input"
+                        placeholder="사용자명 검색"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        ref={searchRef}
+                    />
+                )}
+                <img src={SearchIcon} onClick={handleSearchClick} alt="검색 아이콘" />
                 <Link to="/message"><img src={message} alt="메세지 아이콘" /></Link>
                 <Link to="/notification"><img src={bell} alt="알림 아이콘" /></Link>
                 <Link to="/Navigate"><img src={compass} alt="탐색 아이콘" /></Link>
@@ -55,9 +85,9 @@ function HeaderMenu() {
                 {isModalOpen && (
                     <div className="modal" ref={modalRef}>
                         <ul>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Link.svg"/>링크 복사</li>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Option.svg"/>설정</li>
-                            <li onClick={handleMenuClick}><img src="src/assets/img/Logout.svg"/>로그아웃</li>
+                            <li onClick={handleMenuClick}><img src="src/assets/img/Link.svg" alt="링크 아이콘"/>링크 복사</li>
+                            <li onClick={handleMenuClick}><img src="src/assets/img/Option.svg" alt="설정 아이콘"/>설정</li>
+                            <li onClick={handleMenuClick}><img src="src/assets/img/Logout.svg" alt="로그아웃 아이콘"/>로그아웃</li>
                         </ul>
                     </div>
                 )}
