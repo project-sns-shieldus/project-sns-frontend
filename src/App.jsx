@@ -8,6 +8,7 @@ import Message from "./pages/Message";
 import Navigate from "./pages/Navigate";
 import Notification from "./pages/Notification";
 import Profile from "./pages/Profile";
+import Search from "./pages/Search";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="notification" element={<Notification />} />
                 <Route path="navigate" element={<Navigate/>}/>
                 <Route path="profile" element={<Profile />} />
+                <Route path="search" element={<Search />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
