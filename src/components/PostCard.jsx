@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/PostCard.css';
 import heartIcon from '../assets/img/Heart.svg';
 import commentIcon from '../assets/img/Edit 3.svg';
+import LikeComponent from '../components/LikeComponent';
 
 import { imageApi } from '../api/controller/imageApi'; // imageApi import
 import { Link } from 'react-router-dom';
@@ -29,7 +30,7 @@ export default function PostCard({ post }) {
                 <div className="post-header">
                     <div className="post-author-avatar">
                         {/* 아바타 이미지 또는 기본 아이콘 */}
-                        <img src={post.authorAvatar || '/src/assets/img/User-1.svg'} alt="Avatar" />
+                        <img src={post.authorAvatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="Avatar" />
                     </div>
                     <h3 className="post-author-name">{post.user.username}</h3>
                 </div>
@@ -51,18 +52,20 @@ export default function PostCard({ post }) {
                 <p className="post-content" style={{ whiteSpace: 'pre-wrap' }}>
                     {post.content}
                 </p>
-    
+            </Link>
                 <div className="post-actions">
                     <button className="like-button">
-                        <img src={heartIcon} alt="Like" />
-                        좋아요
+                        {/* <img src={heartIcon} alt="Like" /> */}
+                        <LikeComponent postId={post.postId} />
                     </button>
+                    <Link to={`/postDetail/${post.postId}`} style={{ textDecoration: 'none' }}>
                     <button className="comment-button">
                         <img src={commentIcon} alt="Comment" />
-                        댓글 달기
+                        Comments
                     </button>
+                    </Link>
                 </div>
-            </Link>
+            
         </div>
     );
 }
