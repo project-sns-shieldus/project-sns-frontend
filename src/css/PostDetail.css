@@ -117,17 +117,28 @@
     border-radius: 8px;
     background-color: #f0f0f0;
     box-sizing: border-box;
+
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .post-detail-comments-new {
     width: 100%;
     border: none;
-    resize: none;
+    resize: none; /* Disable manual resizing by the user */
     padding: 10px;
     border-radius: 8px;
     background-color: #f0f0f0;
     box-sizing: border-box;
+    overflow: hidden; /* Hide overflow to prevent scrollbar */
+    min-height: 40px; /* Minimum height of the textarea */
+    line-height: 1.5; /* Line height to make text readable */
+    font-size: 1rem; /* Font size for consistency */
 }
+
+
 
 .comment-actions {
     display: flex;
