@@ -119,14 +119,14 @@ export default function Comment({ comment, currentUsername, onUpdateComment }) {
                     <ul>
                         {comment.user.username === currentUsername ? (
                             <>
-                                <li onClick={handleEditClick}><img src={edit} alt="edit" /> Edit</li>
-                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> Reply</li>
-                                <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> Delete</li>
+                                <li onClick={handleEditClick}><img src={edit} alt="edit" /> 댓글 수정</li>
+                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> 답글 달기</li>
+                                <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> 댓글 삭제</li>
                             </>
                         ) : (
                             <>
-                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> Reply</li>
-                                <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> Delete</li>
+                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> 답글 달기</li>
+                                <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> 댓글 삭제</li>
                             </>
                         )}
                     </ul>
