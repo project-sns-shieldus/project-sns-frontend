@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import '../css/Profile.css'
 import { userApi } from '../api/controller/userApi'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Profile() {
+    const { id } = useParams();
 
     const [user, setUser] = useState(null);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await userApi.getUser(localStorage.getItem("userId"));
+                const response = await userApi.getUser(id);
                 setUser(response.data);
                 console.log(response.data);
             } catch (error) {

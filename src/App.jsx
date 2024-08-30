@@ -21,7 +21,7 @@ function App() {
                 <Route path="message" element={<Message/>}/>
                 <Route path="notification" element={<Notification />} />
                 <Route path="navigate" element={<Navigate/>}/>
-                <Route path="profile" element={<Profile />} />
+                <Route path="profile/:id" element={<Profile />} />
                 <Route path="search" element={<Search />} />
             </Route>
             <Route path="/login" element={<Login />} />
