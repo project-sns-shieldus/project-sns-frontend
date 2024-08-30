@@ -26,7 +26,7 @@ export default function PostCard({ post }) {
 
     return (
         <div className="post-card">
-            <Link to={`/profile/${post.user.userId}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/profile/${post.user.userId}`} style={{ textDecoration: 'none', color: 'inherit'  }}>
                 <div className="post-header">
                     <div className="post-author-avatar">
                         {/* 아바타 이미지 또는 기본 아이콘 */}
@@ -36,7 +36,7 @@ export default function PostCard({ post }) {
                 </div>
             </Link>
             
-            <Link to={`/postDetail/${post.postId}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/postDetail/${post.postId}`} style={{ textDecoration: 'none', color: 'inherit'  }}>
                 {/* 이미지 렌더링 */}
                 <div className="post-images">
                     {images.map(image => (
