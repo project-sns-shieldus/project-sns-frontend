@@ -134,7 +134,7 @@ export default function PostDetail() {
         if (decision) {
             try {
                 await postApi.deletePost(post.postId);
-                navigate("/profile");
+                navigate(-1);
             } catch (error) {
                 console.error("Error deleting post:", error);
             }
@@ -166,6 +166,15 @@ export default function PostDetail() {
                         <p className='post-detail-content'>{post.content}</p>
                     </>
                 )}
+                <>
+                    {post?.images?.length > 0 && (
+                        <img
+                            src={`http://localhost:8080/uploads/${post.images[0].fileName}`}
+                            alt="Post"
+                        />
+                    )}
+                    <p className='post-detail-content'>{post.content}</p>
+                </>
 
                 <div className='post-detail-functions'>
                     <img src={heart} alt="Like" />
