@@ -64,6 +64,10 @@
     gap: 30px;
 }
 
+.post-detail-functions img {
+    cursor: pointer;
+}
+
 .post-detail-content {
     font-size: 1.1rem;
     font-weight: bold;

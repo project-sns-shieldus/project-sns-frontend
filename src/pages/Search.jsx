@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userApi } from '../api/controller/userApi';
-import { useLocation } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom'; 
 import searchIcon from '../assets/img/Search.svg'; // 검색 아이콘 이미지 import
 import '../css/Search.css'; // CSS 파일 이름도 고유하게 변경
 import FollowButton from '../components/FollowButton'; // FollowButton 컴포넌트 import
@@ -58,13 +58,15 @@ export default function SearchComponent() {
 
                 {user && (
                     <div className="search-component-message-content">
-                        <div className="search-component-profile-row">
-                            <img
-                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                                alt={user.username}
-                                className="search-component-user-image search-component-active-border"
-                            />
-                        </div>
+                        <Link to={`/profile/${user.userId}`} style={{ textDecoration: 'none' }}>
+                            <div className="search-component-profile-row">
+                                <img
+                                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    alt={user.username}
+                                    className="search-component-user-image search-component-active-border"
+                                />
+                            </div>
+                        </Link>
                         <div className="search-component-username-row">
                             <p className="search-component-username">{user.username}</p>
                         </div>

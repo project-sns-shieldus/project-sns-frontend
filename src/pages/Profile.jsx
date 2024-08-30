@@ -51,7 +51,9 @@ export default function Profile() {
 
                 <div className='posts'>
                     {user?.posts?.map((post, index) => (
-                        <Link to={`/postDetail/${post?.postId}`}><img key={index} src={`http://localhost:8080/uploads/${post?.images[0]?.fileName}`} alt={`Post ${index}`} /></Link>
+                        <Link to={`/postDetail/${post?.postId}`}>
+                            <img key={index} src={(post?.images).length > 0 ? `http://localhost:8080/uploads/${post?.images[0]?.fileName}` : '/src/assets/img/NoImage.png'} alt={`Post ${index}`} />
+                        </Link>
                     ))}
                 </div>
             </div>

@@ -5,7 +5,7 @@ import heart from 'src/assets/img/Heart.svg';
 import edit from 'src/assets/img/Edit 3.svg';
 import sendIcon from 'src/assets/img/Comment.svg';
 import deleteIcon from 'src/assets/img/Delete.svg';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { postApi } from '../api/controller/postApi';
 import { commentApi } from '../api/controller/commentApi';
 import Comment from './Comment';
@@ -145,10 +145,12 @@ export default function PostDetail() {
         <div className='post-detail-container'>
             <div className='post-detail-box'>
                 <div className='post-detail-user-basic-info'>
-                    <div className='post-detail-user-info'>
-                        <img src={post?.user?.profileImage || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="User" />
-                        <p className='user-name'>{post?.user?.username}</p>
-                    </div>
+                    <Link to={`/profile/${post?.user?.userId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <div className='post-detail-user-info'>
+                            <img src={post?.user?.profileImage || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} alt="User" />
+                            <p className='user-name'>{post?.user?.username}</p>
+                        </div>
+                    </Link>
                     <img
                         className='post-detail-option'
                         src={moreHorizontal}
