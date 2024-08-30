@@ -3,10 +3,13 @@ import moreVertical from 'src/assets/img/More Vertical.svg';
 import edit from 'src/assets/img/Edit 3.svg';
 import sendIcon from 'src/assets/img/Comment.svg';
 import deleteIcon from 'src/assets/img/Delete.svg';
+import { commentApi } from '../api/controller/commentApi';
 
-export default function Comment({ comment, currentUserId, currentUsername }) {
+export default function Comment({ comment, currentUsername, onUpdateComment }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedContent, setEditedContent] = useState(comment.content);
     const modalRef = useRef(null);
 
     const toggleModal = (event) => {
@@ -28,18 +31,39 @@ export default function Comment({ comment, currentUserId, currentUsername }) {
         };
     }, []);
 
-    const handleMenuClick = () => {
-        setIsModalOpen(false);
-    };
-
     const handleEditClick = () => {
+        setIsEditing(true);
         setIsModalOpen(false);
-        // Add your edit logic here
     };
 
-    const handleDeleteClick = () => {
-        setIsModalOpen(false);
-        // Add your delete logic here
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            await commentApi.updateComment(comment?.commentId, editedContent);
+            setIsEditing(false);
+
+            const updatedComment = { ...comment, content: editedContent };
+            onUpdateComment(updatedComment);
+        } catch (error) {
+            console.error('Error updating comment:', error);
+        }
+    };
+
+    const handleReplyClick = () => {
+
+    }
+
+    const handleDeleteClick = async () => {
+        try {
+            await commentApi.deleteComment(comment?.commentId);
+            
+            onUpdateComment(comment, true);
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
     };
 
     return (
@@ -51,15 +75,40 @@ export default function Comment({ comment, currentUserId, currentUsername }) {
                 />
                 <div>
                     <p className='post-detail-commenter-user-name'>{comment.user.username}</p>
-                    <p className='post-detail-comments-content'>{comment.content}</p>
+                    {isEditing ? (
+                        <textarea
+                            className='post-detail-comments-new'
+                            value={editedContent}
+                            onChange={(e) => setEditedContent(e.target.value)}
+                        />
+                    ) : (
+                        <p className='post-detail-comments-content'>{comment.content}</p>
+                    )}
                 </div>
             </div>
-            <img
-                className='comment-option'
-                src={moreVertical}
-                alt="Comment options"
-                onClick={toggleModal}
-            />
+            {isEditing ? (
+                <div className="comment-actions">
+                    <img
+                        src={sendIcon}
+                        alt="Send"
+                        onClick={handleSaveClick}
+                        style={{ cursor: 'pointer', marginRight: '10px' }}
+                    />
+                    <img
+                        src={deleteIcon}
+                        alt="Delete"
+                        onClick={handleCancelClick}
+                        style={{ cursor: 'pointer' }}
+                    />
+                </div>
+            ) : (
+                <img
+                    className='comment-option'
+                    src={moreVertical}
+                    alt="Comment options"
+                    onClick={toggleModal}
+                />
+            )}
 
             {isModalOpen && (
                 <div
@@ -71,12 +120,12 @@ export default function Comment({ comment, currentUserId, currentUsername }) {
                         {comment.user.username === currentUsername ? (
                             <>
                                 <li onClick={handleEditClick}><img src={edit} alt="edit" /> Edit</li>
-                                <li onClick={handleMenuClick}><img src={sendIcon} alt="reply" /> Reply</li>
+                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> Reply</li>
                                 <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> Delete</li>
                             </>
                         ) : (
                             <>
-                                <li onClick={handleMenuClick}><img src={sendIcon} alt="reply" /> Reply</li>
+                                <li onClick={handleReplyClick}><img src={sendIcon} alt="reply" /> Reply</li>
                                 <li onClick={handleDeleteClick}><img src={deleteIcon} alt="delete" /> Delete</li>
                             </>
                         )}
