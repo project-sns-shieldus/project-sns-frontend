@@ -77,8 +77,8 @@ function HeaderMenu() {
                 <img src={SearchIcon} onClick={handleSearchClick} alt="검색 아이콘" />
                 <Link to="/message"><img src={message} alt="메세지 아이콘" /></Link>
                 <Link to="/notification"><img src={bell} alt="알림 아이콘" /></Link>
-                <Link to="/Navigate"><img src={compass} alt="탐색 아이콘" /></Link>
-                <Link to="/Profile"><img src={user} alt="유저 아이콘" /></Link>
+                <Link to="/navigate"><img src={compass} alt="탐색 아이콘" /></Link>
+                <Link to={`/profile/${localStorage.getItem("userId")}`}><img src={user} alt="유저 아이콘" /></Link>
                 <img
                     src={vertical}
                     alt="더보기 아이콘"
