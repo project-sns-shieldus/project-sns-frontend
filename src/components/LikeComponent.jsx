@@ -3,36 +3,30 @@ import "../css/LikeComponent.css";
 import heartIcon from "../assets/img/Heart.svg";
 import filledHeartIcon from "../assets/img/filled-Heart.svg";
 import { postLikeApi } from "../api/controller/postLikeApi";
+import { postApi } from "../api/controller/postApi";
 
 const LikeComponent = ({ postId }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
-  // const [likeId, setLikeId] = useState(null);
+  const [likeId, setLikeId] = useState(null); // postLikeId 상태 추가
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchLikes = async () => {
-      // console.log(`Fetching likes for post: ${postId}`);
-
       try {
         const response = await postLikeApi.getLikesByPostId(postId, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(
-          "Likes fetched successfully. Total likes:",
-          response.data.length
-        );
 
         setLikesCount(response.data.length);
 
-        // 누가 좋아요를 눌렀는지 출력 및 내 userId 확인
-        console.log("Users who liked this post:");
         response.data.forEach((like) => {
           if (like.user.userId === parseInt(userId, 10)) {
             setHasLiked(true);
+            setLikeId(like.userPostLikeId); // postLikeId 저장
           }
         });
       } catch (error) {
@@ -43,26 +37,35 @@ const LikeComponent = ({ postId }) => {
     fetchLikes();
   }, [postId, userId, token]);
 
-  // 이때 LikeId가 undefined로 나옴
   const handleLike = async () => {
     if (hasLiked) {
-      console.log(
-        "You have already liked this post. Like action will not proceed."
-      );
-      return; // 좋아요가 이미 눌린 상태에서 다시 눌리지 않도록 처리
-    }
+      try {
+        await postLikeApi.unlikePost(likeId, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-    try {
-      const response = await postLikeApi.likePost(postId, userId, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        setHasLiked(false);
+        setLikesCount((prevCount) => prevCount - 1);
+        setLikeId(null); // 좋아요 취소 후 likeId 초기화
+      } catch (error) {
+        console.error("Error unliking post:", error);
+      }
+    } else {
+      try {
+        const response = await postLikeApi.likePost(postId, userId, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      setHasLiked(true);
-      setLikesCount((prevCount) => prevCount + 1);
-    } catch (error) {
-      console.error("Error liking post:", error);
+        setHasLiked(true);
+        setLikesCount((prevCount) => prevCount + 1);
+        setLikeId(response.data.postLikeId); // 새로 생성된 likeId 저장
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
     }
   };
 
@@ -73,7 +76,7 @@ const LikeComponent = ({ postId }) => {
         alt="Like"
         className={`heart-icon ${hasLiked ? "liked" : ""}`}
         onClick={handleLike}
-        style={{ cursor: hasLiked ? "not-allowed" : "pointer" }} // 좋아요가 눌린 상태면 커서를 비활성화
+        style={{ cursor: "pointer" }}
       />
       <p className="like-value">{likesCount} Likes</p>
     </div>
