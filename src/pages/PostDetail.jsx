@@ -9,6 +9,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { postApi } from '../api/controller/postApi';
 import { commentApi } from '../api/controller/commentApi';
 import Comment from './Comment';
+import LikeComponent from '../components/LikeComponent';
 
 export default function PostDetail() {
     const { id } = useParams();
@@ -165,12 +166,14 @@ export default function PostDetail() {
                             src={`http://localhost:8080/uploads/${post.images[0].fileName}`}
                             alt="Post"
                         />
-                        <p className='post-detail-content'>{post.content}</p>
+                        <p className="post-detail-content" style={{ whiteSpace: 'pre-wrap' }}>
+                        {post.content}
+                        </p>
                     </>
                 )}
 
                 <div className='post-detail-functions'>
-                    <img src={heart} alt="Like" />
+                    <LikeComponent postId={post.postId} />
                     <img src={edit} alt="Edit" onClick={handleWriteComment} />
                 </div>
 

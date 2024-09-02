@@ -9,6 +9,7 @@ export default function PostModal({ onClose }) {
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
+    const username = localStorage.getItem("username");
 
     useEffect(() => {
         setIsVisible(true); // 모달을 화면에 표시
@@ -55,7 +56,7 @@ export default function PostModal({ onClose }) {
         <div className={`modal-overlay ${isVisible ? 'show' : ''}`}>
             <div className="modal-content">
                 <div className="modal-header">
-                    <span>username</span>
+                    <span>{username}</span>
                 </div>
                 <textarea 
                     value={content} 
